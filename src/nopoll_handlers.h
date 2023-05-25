@@ -214,6 +214,23 @@ typedef void (*noPollOnCloseHandler)    (noPollCtx  * ctx,
 					 noPollConn * conn, 
 					 noPollPtr    user_data);
 
+/**
+ * @brief Handler definition used by \ref nopoll_conn_set_on_pong.
+ *
+ * Handler definition for the function that is called when the
+ * connection receives a PONG frame
+ *
+ * @param ctx The context where the operation will take place.
+ *
+ * @param conn The connection where the operation will take place.
+ *
+ * @param user_data The reference that was configured to be passed in
+ * into the handler.
+ */
+typedef void (*noPollOnPongHandler)    (noPollCtx  * ctx,
+                                        noPollConn * conn,
+                                        noPollPtr    user_data);
+
 /** 
  * @brief Mutex creation handler used by the library.
  *

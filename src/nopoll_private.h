@@ -233,6 +233,12 @@ struct _noPollConn {
 	noPollOnMessageHandler on_msg;
 	noPollPtr              on_msg_data;
 
+        /**
+         * @internal Reference to the defined on pong handling.
+         */
+        noPollOnPongHandler on_pong;
+        noPollPtr           on_pong_data;
+
 	/** 
 	 * @internal Reference to defined on ready handling.
 	 */

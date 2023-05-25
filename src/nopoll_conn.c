@@ -3395,6 +3395,8 @@ noPollMsg   * nopoll_conn_get_msg (noPollConn * conn)
 	if (msg->op_code == NOPOLL_PONG_FRAME) {
 		nopoll_log (conn->ctx, NOPOLL_LEVEL_DEBUG, "PONG received over connection id=%d", conn->id);
 		nopoll_msg_unref (msg);
+                if (conn->on_pong)
+                    conn->on_pong(conn->ctx, conn, conn->on_pong_data);
 		return NULL;
 	} /* end if */
 
@@ -4064,6 +4066,31 @@ nopoll_bool      nopoll_conn_send_ping (noPollConn * conn)
 		return nopoll_false;
 	
 	return nopoll_conn_send_frame (conn, nopoll_true, conn->role == NOPOLL_ROLE_CLIENT, NOPOLL_PING_FRAME, 0, NULL, 0) >= 0;
+}
+
+/**
+ * @brief Allows to configure an on pong handler on the provided
+ * connection that overrides the one configured at \ref noPollCtx.
+ *
+ * @param conn The connection to be configured with a particular on pong handler.
+ *
+ * @param on_msg The on pong handler configured.
+ *
+ * @param user_data User defined pointer to be passed in into the on pong handler when it is called.
+ *
+ */
+void          nopoll_conn_set_on_pong (noPollConn              * conn,
+				      noPollOnPongHandler      on_pong,
+				      noPollPtr                user_data)
+{
+        if (conn == NULL)
+                return;
+
+        /* configure on message handler */
+        conn->on_pong      = on_pong;
+        conn->on_pong_data = user_data;
+
+        return;
 }
 
 /** 
